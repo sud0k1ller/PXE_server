@@ -1,0 +1,57 @@
+#!/bin/bash
+#####################################################  USAGE  ########################################################
+#
+#   $1 - path to ISO file
+#   $2 - path to custom preseed file
+#
+#   np.: ./change_preseed_and_regenerate_iso debian-10.3.0-amd64-DVD-1.iso custom_preseed_debian
+#
+#   details found on https://wiki.debian.org/DebianInstaller/Preseed/EditIso#Extracting_the_Initrd_from_an_ISO_Image
+#
+######################################################################################################################
+
+iso_name=$1
+preseed_name=$2
+unpacked_iso_directory_name="unpacked_iso"
+
+### ISO UNPACKING
+7z x $iso_name -o$unpacked_iso_directory_name
+echo -e "\033[0;32m[+] ISO FILE UNPACKED TO: \033[0m" $unpacked_iso_directory_name 
+
+### ADDING CUSTOM PRESEED FILE TO ISO AND MODYFYING ISO
+chmod +w -R $unpacked_iso_directory_name
+echo -e "\033[0;32m[+] DIRECTORY CHMOD CHANGED\033[0m"
+#gunzip $unpacked_iso_directory_name/install.amd/initrd.gz
+#echo -e "\033[0;32m[+] INITRD UNPACKED\033[0m"
+
+#####################################################################################################################
+######################### ANY ADDITIONAL CHANGES MUST BE DONE BETWEEN THOSE TWO LINES  ##############################
+#####################################################################################################################
+
+## TESTING ISOLINUX MODIFYING
+# FILES CHANGED IN ISOLINUX: splash.png / menu.cfg / isolinux.cfg / stdmenu.cfg
+
+cp -r /root/GIT/Scripts/isolinux $unpacked_iso_directory_name
+
+#####################################################################################################################
+######################### ANY ADDITIONAL CHANGES MUST BE DONE BETWEEN THOSE TWO LINES  ##############################
+#####################################################################################################################
+
+cp $preseed_name $unpacked_iso_directory_name/simple-cdd/default.preseed
+echo -e "\033[0;32m[+] PRESEED.CFG OVERWRITTEN\033[0m"
+#gzip $unpacked_iso_directory_name/install.amd/initrd
+#chmod -w -R $unpacked_iso_directory_name/install.amd
+
+### ACTUALIZATION OF MD5SUM.TXT
+cd $unpacked_iso_directory_name
+chmod +w md5sum.txt
+find -L -type f ! -name md5sum.txt -print0 | xargs -0 md5sum > md5sum.txt
+echo -e "\033[0;32m[+] MD5FILE REGENERATED\033[0m" 
+chmod -w md5sum.txt
+cd ..
+
+### NEW ISO GENERATING
+genisoimage -J -r -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -V CUSTOM_ISO -o custom_iso.iso unpacked_iso
+echo -e "\033[0;32m[+] CUSTOM ISO GENERATED\033[0m"
+
+rm -r unpacked_iso
