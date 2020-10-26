@@ -1,7 +1,22 @@
-#### CONFIGURE SERVER ####
-  [1] Install Fedora Server
-  [2] Setup
+# STEPS
+
+## CONFIGURE SERVER
+  ### [1] Install Fedora Server
+  ### [2] Set static IP address on NIC:
+      #### [a] Modify /etc/sysconfig/network-scripts/ifcfg-<interface_name>
+          Content:
+           ```
+           
+           ```
+           
+  ### [3] Set DHCP Server:
+      #### [a]
+      #### [b]
+  
+  ### [4] Set TFTP Server:
+      #### [a]
+      #### [b]
  
-#### CONFIGURE HOST ####
-  [1] Set NetBoot as first choice booting method
-  [2] Done!
+## CONFIGURE HOST
+  ### [1] Set NetBoot as first choice booting method
+  ### [2] Done!
