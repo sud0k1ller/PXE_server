@@ -2,24 +2,32 @@
   ### [1] Install Fedora Server
   ### [2] Set static IP address on NIC:
       #### [a] Backup original /etc/sysconfig/network-scripts/ifcfg-<interface_name>
+      #### You can create second interface to have internet access and PXE access interface
       #### [b] Modify /etc/sysconfig/network-scripts/ifcfg-<interface_name>
             Content:
             ```
-             TYPE=<leave_it>
+             TYPE=Ethernet
              DEVICE=<interface_name>
              BOOTPROTO=none
              IPADDR=<static_IP>
              ONBOOT=yes 
              UUID=<leave_it>
             ```         
+      #### [c] systemctl restart network
+      
   ### [3] Set DHCP Server:
       #### [a] yum install dhcp
       #### [b] Backup /etc/dhcp/dhcpd.conf
       #### [c] Modify /etc/dhcp/dhcpd.conf
             Content:
             ```
+            subnet <IP_range> netmask <netmask> {
+              o
             
+            
+            }
             ```
+      #### [d] systemctl restart dhcpd.service
   
   ### [4] Set TFTP Server:
       #### [a]
