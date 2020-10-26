@@ -1,17 +1,25 @@
-# STEPS
-
 ## CONFIGURE SERVER
   ### [1] Install Fedora Server
   ### [2] Set static IP address on NIC:
-      #### [a] Modify /etc/sysconfig/network-scripts/ifcfg-<interface_name>
-          Content:
-           ```
-           
-           ```
-           
+      #### [a] Backup original /etc/sysconfig/network-scripts/ifcfg-<interface_name>
+      #### [b] Modify /etc/sysconfig/network-scripts/ifcfg-<interface_name>
+            Content:
+            ```
+             TYPE=<leave_it>
+             DEVICE=<interface_name>
+             BOOTPROTO=none
+             IPADDR=<static_IP>
+             ONBOOT=yes 
+             UUID=<leave_it>
+            ```         
   ### [3] Set DHCP Server:
-      #### [a]
-      #### [b]
+      #### [a] yum install dhcp
+      #### [b] Backup /etc/dhcp/dhcpd.conf
+      #### [c] Modify /etc/dhcp/dhcpd.conf
+            Content:
+            ```
+            
+            ```
   
   ### [4] Set TFTP Server:
       #### [a]
