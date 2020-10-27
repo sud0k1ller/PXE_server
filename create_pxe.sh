@@ -8,9 +8,10 @@
 ###############################
 ## INSTALL REQUIRED FEATURES ##
 ###############################
+
 yum update &&
 yum install dhcp &&
-## HERE COPY DHCPD CONFIG FILE ##
+wget -O /etc/dhcp/dhcpd.conf https://raw.githubusercontent.com/sud0k1ller/PXE_server/master/dhcpd.conf
 yum install tftp-server &&
 
 ## PREPARE BIOS BOOTLOADERS ##
@@ -30,6 +31,7 @@ cp /tmp/fedora/boot/efi/EFI/fedora/{shimx64.efi,grubx64.efi} /var/lib/tftpboot/u
 ###############################
 ##     PREPARE SERVICES      ##
 ###############################
+
 systemctl stop firewalld
 systemctl disable firewalld
 systemctl restart NetworkService
